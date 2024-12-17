@@ -11,9 +11,6 @@ public class PrefabsCategory
 }
 public class PoolManager : MonoBehaviour
 {
-    /// <summary> <item> <description> 0 = Enemy, </description> </item>
-    /// <item> <description> 1 = Weapons, </description> </item>
-    /// <item> <description> 2 = Drop Items </description> </item> </summary>
     public PrefabsCategory[] prefabsCategories;
     private List<GameObject>[][] _pools;
 
@@ -36,6 +33,10 @@ public class PoolManager : MonoBehaviour
         }
     }
 
+    
+    /// <summary> <item> <description> 0 = Enemy, </description> </item>
+    /// <item> <description> 1 = Weapons {token, keycap}, </description> </item>
+    /// <item> <description> 2 = Drop Items </description> </item> </summary>
     public GameObject Get(int categoryIndex, int prefabIndex)
     {
         GameObject select = null;

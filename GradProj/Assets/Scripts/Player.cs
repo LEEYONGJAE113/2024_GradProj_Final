@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public Vector2 inputVec;
-    public float moveSpeed;//temp >> gamemanager
+    public Scanner scanner;
     private Rigidbody2D _rb;
     private SpriteRenderer _spriter;
     private Animator _anim;
@@ -17,27 +17,57 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _spriter = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
     }
 
+    
+
+    void FixedUpdate()
+    {
+        if (!GameManager.instance.isTimeGoing) { return; }
+
+        Vector2 nextVec = inputVec * GameManager.instance.playerMoveSpeed * Time.fixedDeltaTime;
+        Vector2 nextPos = _rb.position + nextVec;
+
+        _rb.MovePosition(nextPos);
+
+        if (GameManager.instance.questManager.currentQuest == QuestManager.Quests.Move)
+        {
+            float distance = Vector2.Distance(_rb.position, nextPos);
+            GameManager.instance.questManager.questProgress += distance;
+        }
+        
+        _rb.velocity = Vector2.zero;
+    }
     void OnMove(InputValue iValue)
     {
         inputVec = iValue.Get<Vector2>();
     }
-
-    void FixedUpdate()
-    {
-        Vector2 nextVec = inputVec * moveSpeed * Time.fixedDeltaTime;
-        Vector2 nextPos = _rb.position + nextVec;
-        _rb.MovePosition(nextPos);
-        _rb.velocity = Vector2.zero;
-    }
-
     void LateUpdate()
     {
+        if (!GameManager.instance.isTimeGoing) { return; }
+        
         _anim.SetFloat("Speed", inputVec.magnitude);
         if (inputVec.x != 0)
         {
             _spriter.flipX = inputVec.x < 0;
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!GameManager.instance.isTimeGoing || !collision.transform.CompareTag("Enemy")) { return; }
+        
+        GameManager.instance.inGameCurrentHp -= Time.deltaTime * 10;
+
+        if (GameManager.instance.inGameCurrentHp <= 0)
+        {
+            for (int idx = 2; idx < transform.childCount; idx++)
+            {
+                transform.GetChild(idx).gameObject.SetActive(false);
+            }
+            _anim.SetTrigger("Die");
+            GameManager.instance.GameOver();
         }
     }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8482216913662690935}
   - component: {fileID: 7700034956399809039}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 2428348451589419109}
   - component: {fileID: 1985872330454500396}
   - component: {fileID: 5935639008995686988}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ Animator:
   m_GameObject: {fileID: 2713289064465599210}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 315140f416206a24d853883dd2291a5c, type: 2}
+  m_Controller: {fileID: 22100000, guid: 70e5c7a21b9403a428d24a579ffef716, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
