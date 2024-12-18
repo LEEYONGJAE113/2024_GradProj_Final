@@ -42,7 +42,7 @@ public class Boost : MonoBehaviour
         WeaponManager[] weaponManagers = transform.parent.GetComponentsInChildren<WeaponManager>();
         foreach (WeaponManager weaponManager in weaponManagers)
         {
-            weaponManager.coolTime = weaponManager.coolTime * rate;
+            weaponManager.coolTime = weaponManager.coolTime * rate * 100;
         }
     }
 

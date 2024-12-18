@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     /// <summary> <item> <description> 
-    /// 0 = 보안토큰, 1 = 키캡
+    /// 0 = 보안토큰, 1 = 키캡, 2 = 가비지컬렉트럭
     /// </description> </item> </summary>
     public int id;
     public float damage;
@@ -35,6 +35,15 @@ public class WeaponManager : MonoBehaviour
                 {
                     _timer = 0f;
                     FireKeyCap();
+                }
+                break;
+            case 2:
+                _timer += Time.deltaTime;
+
+                if (_timer > coolTime)
+                {
+                    _timer = 0f;
+                    SpawnTruck();
                 }
                 break;
             default:
@@ -102,8 +111,8 @@ public class WeaponManager : MonoBehaviour
 
             Vector3 rotVec = Vector3.forward * 360 * idx / count;
             weapon.Rotate(rotVec);
-            weapon.Translate(weapon.up * 1.5f/*플레이어와의 거리*/, Space.World);
-            weapon.GetComponent<WeaponData>().Init(damage, -500/*infinite*/, Vector3.zero, coolTime, fast);
+            weapon.Translate(weapon.up * WeaponData.TOKEN_AND_PLAYER_GAP, Space.World);
+            weapon.GetComponent<Weapon>().Init(damage, WeaponData.INFINITY_PER, Vector3.zero, coolTime, fast);
         }
     }
 
@@ -118,7 +127,25 @@ public class WeaponManager : MonoBehaviour
         Transform weapon = GameManager.instance.pool.Get(1, id).transform;
         weapon.position = transform.position;
         weapon.rotation = Quaternion.FromToRotation(Vector3.right, dir);
-        weapon.GetComponent<WeaponData>().Init(damage, count, dir, coolTime, fast);
+        weapon.GetComponent<Weapon>().Init(damage, count, dir, coolTime, fast);
     }
 
+    void SpawnTruck()
+    {
+        for (int idx = 0; idx < count; idx++)
+        {
+            float ranAngle = Random.Range(0f, 2 * Mathf.PI);
+
+            Vector3 ranPoint = new Vector3(
+                _player.transform.position.x + Mathf.Cos(ranAngle) * WeaponData.GCTRUCK_SPAWN_RADIUS,
+                _player.transform.position.y + Mathf.Sin(ranAngle) * WeaponData.GCTRUCK_SPAWN_RADIUS,
+                _player.transform.position.z
+                );
+            Vector3 dir = _player.transform.position - ranPoint;
+            Transform weapon = GameManager.instance.pool.Get(1, id).transform;
+            weapon.position = ranPoint;
+            weapon.rotation = Quaternion.FromToRotation(Vector3.right, dir);
+            weapon.GetComponent<Weapon>().Init(damage, WeaponData.INFINITY_PER, dir, coolTime, fast);
+        }
+    }
 }

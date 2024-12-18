@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponData : MonoBehaviour
+public class WeaponData
+{
+    public const int INFINITY_PER = -500; // 무한관통력
+    public const float TOKEN_AND_PLAYER_GAP = 1.5f;
+    public const float GCTRUCK_SPAWN_RADIUS = 10f;
+}
+public class Weapon : MonoBehaviour
 {
     public float damage;
     public int per; // ==count
@@ -22,7 +28,7 @@ public class WeaponData : MonoBehaviour
         this.per = per;
         this.coolTime = coolTime;
 
-        if (per >= 0)
+        if (!IsMelee())
         {
             _rb.velocity = dir * fast;
         }
@@ -30,7 +36,7 @@ public class WeaponData : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy") || per == -500) { return; }
+        if (!collision.CompareTag("Enemy") || per == WeaponData.INFINITY_PER) { return; }
 
         per--;
 
@@ -43,7 +49,15 @@ public class WeaponData : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Area") || per == -500) { return; }
+        if (!collision.CompareTag("Area") || IsMelee()) { return; }
         gameObject.SetActive(false);
+    }
+
+    bool IsMelee()
+    {
+        if (gameObject.transform.parent != null && gameObject.transform.parent.name == "Weapon 0")
+        { return true; }
+        else
+        { return false; }
     }
 }

@@ -36,11 +36,10 @@ public class Item : MonoBehaviour
         {
             case ItemData.ItemType.Token:
             case ItemData.ItemType.Keycap:
+            case ItemData.ItemType.Gctruck:
                 textDesc.text = string.Format(data.itemDesc, data.damages[itemLevel] * 100, data.counts[itemLevel], 100 - (data.coolTimes[itemLevel] * 100));
                 break;
             case ItemData.ItemType.Zandi:
-                textDesc.text = string.Format(data.itemDesc, 100 - (data.damages[itemLevel] * 100));
-                break;
             case ItemData.ItemType.Hmchair:
                 textDesc.text = string.Format(data.itemDesc, data.damages[itemLevel] * 100);
                 break;
@@ -57,6 +56,7 @@ public class Item : MonoBehaviour
         {
             case ItemData.ItemType.Token:
             case ItemData.ItemType.Keycap:
+            case ItemData.ItemType.Gctruck:
                 if (itemLevel == 0)
                 {
                     GameObject newWeaponManager = new GameObject();
