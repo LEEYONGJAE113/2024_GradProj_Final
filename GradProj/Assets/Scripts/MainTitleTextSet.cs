@@ -20,7 +20,11 @@ public class MainTitleTextSet : MonoBehaviour
                     + "<color=#CD9178>\"Hello, Error!\\n\"</color>"
                     + "<color=#569CD6>)</color><color=#FFFFFF>;\n</color>"
                     + "<color=#B95AA5>}</color>";
-        _title[1] = "<color=#FFFFFF>int main()\n{\n  printf(\"Hello, Error!\\n\");\n}</color>";
+        _title[1] = "<color=#A400C0>print</color>"
+                    + "<color=#FFFFFF>(</color>"
+                    + "<color=#00B50D>\'Hello, Error!\'</color>"
+                    + "<color=#FFFFFF>)</color>";
+
         _text.text = _title[0];
     }
 
